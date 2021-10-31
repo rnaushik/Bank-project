@@ -33,19 +33,20 @@ class Bank{
 
   }
   //this stores customers' details in the file
-    void createCustomerRecord(Bank bank){
+    void createCustomerRecord(){
       string file_name = depositer_name_+"_"+getPhoneNumber()+".txt";
-      ofstream fwrite(file_name);fwrite.write((char *)&bank ,sizeof(bank));
+      ofstream fwrite(file_name);
+      // ofstream fwrite(file_name);fwrite.write((char *)&bank ,sizeof(bank));
 
-      fwrite.close();
+      // fwrite.close();
 
       //fwrite.write((char *)& *this,sizeof(this));
-      // fwrite<<depositer_name_<<"\n";
-      // fwrite<<account_Type_<<"\n";
-      // fwrite<<account_no_<<"\n";
-      // fwrite<<address_<<"\n";
-      // fwrite<<phone_no_<<"\n";
-      // fwrite.close();
+      fwrite<<depositer_name_<<"\n";
+      fwrite<<account_Type_<<"\n";
+      fwrite<<account_no_<<"\n";
+      fwrite<<address_<<"\n";
+      fwrite<<phone_no_<<"\n";
+      fwrite.close();
       
     }
     //reads cutomer details from the file created while initialising.. 
@@ -53,19 +54,28 @@ class Bank{
       string file_name = depositer_name_+"_"+getPhoneNumber()+".txt";
       ifstream fread(file_name);
       Bank bank;
-      fread.read((char *)&bank ,sizeof(bank));
-      bank.showData();
-      cout<<endl;
-      
+      char s[20];
+      //fread.read((char *)&bank ,sizeof(bank));
+      // bank.showData();
+      // cout<<endl;
+      fread.getline(s,20);
+      cout<<"Account Holder's Name : "<<s<<"\n";
+      fread.getline(s,20);
+       cout<<"Account Type : "<<(strcmp(s,"SAVINGS")?"SAVINGS":"CURRENT")<<"\n";
+      fread.getline(s,20);
+      cout<<"Account Number : "<<s<<"\n";
+     
+      fread.getline(s,20);
+      cout<<"Phone number : "<<s<<"\n";
+      fread.getline(s,20);
+      cout<<"Address :"<<s<<"\n";
+      fread.getline(s,20);
+      cout<<"Balance Amount :"<<s<<"\n";
+      cout<<"************************\n";
+
       fread.close();
       
-      // char readName[30];
-      // ifstream ReadFromFile("harmantraining.txt");
-      // while(fread)
-      // {
-      //   fread.getline(readName,30);
-      //   cout<<"\n\n"<<readName;
-      // }
+     
       
     }
 
@@ -227,7 +237,7 @@ void addNewUser(){
   
   AccountHolders.push_back(  Bank(name,AccType,address,ph_no));
   int sz = getSize(AccountHolders);
-  AccountHolders[sz-1].createCustomerRecord(AccountHolders[sz-1]);
+  AccountHolders[sz-1].createCustomerRecord();
   AccountHolders[sz-1].readCustomerRecord();
   cout<<"Your account is created\n";
 }
@@ -269,7 +279,7 @@ int main() {
       cout<<"Choose 1-12\n";
       cin.ignore();
       long acc_no;
-      if(option2!=1){
+      if(option2!=1|| option2!=12){
         cout<<"Enter Account Number\n";
         
         cin>>acc_no;
@@ -337,7 +347,7 @@ int main() {
           
           int idx = AccountExists(acc_no);
           if(idx>=0){          
-            cout<<"Account Holder Name: "<<AccountHolders[idx].getDepositerName();
+            cout<<"Account Holder Name: "<<AccountHolders[idx].getDepositerName()<<"\n";
           }
           else{
             cout<<"Account does not exist\n";
@@ -347,7 +357,7 @@ int main() {
         case 7:{
           int idx = AccountExists(acc_no);
           if(idx>=0){          
-            cout<<"Account Holder Name: "<<AccountHolders[idx].getAddress();
+            cout<<"Account Holder Name: "<<AccountHolders[idx].getAddress()<<"\n";
           }
           else{
             cout<<"Account does not exist\n";
@@ -359,6 +369,7 @@ int main() {
           if(idx>=0){          
             cout<<"Account Holder address: ";
             AccountHolders[idx].displayBalance();
+            cout<<"\n";
           }
           else{
             cout<<"Account does not exist\n";
